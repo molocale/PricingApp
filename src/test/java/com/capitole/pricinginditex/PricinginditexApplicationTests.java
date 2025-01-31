@@ -35,12 +35,10 @@ public class PricinginditexApplicationTests {
 
     @Test
     void test1() throws Exception {
-        // Arrange
         int productId = 35455;
         int brandId = 1;
         String applicationDate = "2020-06-14T10:00:00";
 
-        // Act & Assert
         mockMvc.perform(get("/prices")
                         .param("date", applicationDate)
                         .param("productId", String.valueOf(productId))
@@ -56,12 +54,10 @@ public class PricinginditexApplicationTests {
 
     @Test
     void test2() throws Exception {
-        // Arrange
         int productId = 35455;
         int brandId = 1;
         String applicationDate = "2020-06-14T16:00:00";
 
-        // Act & Assert
         mockMvc.perform(get("/prices")
                         .param("date", applicationDate)
                         .param("productId", String.valueOf(productId))
@@ -77,12 +73,10 @@ public class PricinginditexApplicationTests {
 
     @Test
     void test3() throws Exception {
-        // Arrange
         int productId = 35455;
         int brandId = 1;
         String applicationDate = "2020-06-21T10:00:00";
 
-        // Act & Assert
         mockMvc.perform(get("/prices")
                         .param("date", applicationDate)
                         .param("productId", String.valueOf(productId))
@@ -98,12 +92,10 @@ public class PricinginditexApplicationTests {
 
     @Test
     void test4() throws Exception {
-        // Arrange
         int productId = 35455;
         int brandId = 1;
         String applicationDate = "2020-06-15T10:00:00";
 
-        // Act & Assert
         mockMvc.perform(get("/prices")
                         .param("date", applicationDate)
                         .param("productId", String.valueOf(productId))
@@ -119,12 +111,10 @@ public class PricinginditexApplicationTests {
 
     @Test
     void test5() throws Exception {
-        // Arrange
         int productId = 35455;
         int brandId = 1;
         String applicationDate = "2020-06-16T21:00:00";
 
-        // Act & Assert
         mockMvc.perform(get("/prices")
                         .param("date", applicationDate)
                         .param("productId", String.valueOf(productId))
@@ -140,12 +130,10 @@ public class PricinginditexApplicationTests {
 
     @Test
     void testNotFound() throws Exception {
-        // Arrange
         int productId = 99999; // ID inexistente
         int brandId = 99;
         String applicationDate = "2020-06-16T21:00:00";
 
-        // Act & Assert
         mockMvc.perform(get("/prices")
                         .param("date", applicationDate)
                         .param("productId", String.valueOf(productId))
@@ -158,20 +146,15 @@ public class PricinginditexApplicationTests {
 
     @Test
     void testInternalServerError() throws Exception {
-        // Arrange
         int productId = 35455;
-        int brandId = 1;
         String applicationDate = "2020-06-16T21:00:00";
 
-        // Simulamos una excepción inesperada en el servicio
         when(priceService.getApplicablePrice(anyInt(), anyInt(), any()))
                 .thenThrow(new RuntimeException("Unexpected error occurred"));
 
-        // Act & Assert
         mockMvc.perform(get("/prices")
                         .param("date", applicationDate)
                         .param("productId", String.valueOf(productId))
-                        //.param("brandId", String.valueOf(brandId))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.timestamp").exists())
